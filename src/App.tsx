@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch } from 'react-redux';
 
-function App() {
+import FieldRenderer from './components/FieldRenderer';
+import { useFields } from './redux/selectors';
+import { addForms } from './redux/actions';
+// import {Field} from './redux/types';
+import './style.css';
+
+const App = () => {
+  const dispatch = useDispatch();
+  // const [form, setForm] = useState([]);
+  const fields = useFields();
+
+  console.log(fields);
+
+  // useEffect(() => {
+  //   dispatch(setFields(fields));
+  // }, [dispatch]);
+
+  const makeHandleAddForm = (fields: any) => () => {
+      dispatch(addForms(fields));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="fields-container">
+      <div onClick={makeHandleAddForm}>Form +</div>
+      <div>
+        {fields.map(field => (
+          <FieldRenderer key={field.id} field={field} />
+        ))}
+      </div>
     </div>
   );
-}
-
+};
 export default App;
